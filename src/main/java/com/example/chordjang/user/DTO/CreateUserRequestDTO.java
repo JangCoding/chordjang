@@ -3,7 +3,8 @@ package com.example.chordjang.user.DTO;
 import lombok.Data;
 
 @Data
-public class UserResponseDTO {
+public class CreateUserRequestDTO {
     String userId;
+    String password;
     String email;
 }
