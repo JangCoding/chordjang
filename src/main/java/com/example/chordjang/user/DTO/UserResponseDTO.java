@@ -1,9 +1,19 @@
 package com.example.chordjang.user.DTO;
 
-import lombok.Data;
+import com.example.chordjang.user.User;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
+@Builder
 public class UserResponseDTO {
-    String userId;
-    String email;
+    private final String userId;
+    private final String email;
+
+    public static UserResponseDTO fromEntity(User user){
+        return UserResponseDTO.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail())
+                .build();
+    }
 }
