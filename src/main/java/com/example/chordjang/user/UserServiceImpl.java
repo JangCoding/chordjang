@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,17 +27,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDTO findUserByUserId(String userId) {
-        return null;
-    }
-
-    @Override
-    public UserResponseDTO findUserByEmail(String email) {
-        return null;
+    public UserResponseDTO findUserBy(String userId, String email) {
+        if(userId!=null)
+            return userRepository.findByUserId(userId).map(UserResponseDTO::fromEntity).orElse(null);
+        else if(email!=null)
+            return userRepository.findByEmail(email).map(UserResponseDTO::fromEntity).orElse(null);
+        else
+            throw new IllegalArgumentException("Unknown search type: ");
     }
 
     @Override
     public UserResponseDTO getUserById(Long id) {
+        UserResponseDTO res =  userRepository.findById(id).map(UserResponseDTO::fromEntity).orElse(null);
         return null;
     }
 

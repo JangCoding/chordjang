@@ -15,22 +15,24 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserRequestDTO req){
         UserResponseDTO res = userService.createUser(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res); // 응답 본문에 데이터 담아 보낼 때
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDTO> findUserByUserId(@RequestParam String userId){
-        UserResponseDTO res = userService.findUserByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
-    }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<UserResponseDTO> findUserByEmail(@RequestParam String email){
-        UserResponseDTO res = userService.findUserByEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
+    @GetMapping
+    public ResponseEntity<UserResponseDTO> findUserBy(
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false) String email){
+
+            UserResponseDTO res = userService.findUserBy(userId, email);
+
+            if(res!=null)
+                return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
+
+            return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/{id}")
@@ -39,7 +41,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
     }
 
-    @PatchMapping("")
+    @PatchMapping
     public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserRequestDTO req){
         UserResponseDTO res = userService.updateUser(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
