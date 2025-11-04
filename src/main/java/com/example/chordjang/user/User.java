@@ -2,12 +2,11 @@ package com.example.chordjang.user;
 
 import com.example.chordjang.util.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA는 기본 생성자를 필요로 합니다. 무분별한 생성을 막기 위해 protected로 설정합니다.
 public class User extends BaseEntity {
 
     @Id
@@ -20,4 +19,11 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     String email;
 
+    @Builder
+    public User(String userId, String password, String email){
+        // id 는 .save() 호출 시점에 자동 저장됨. build 시점까지는 null
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+    }
 }

@@ -8,10 +8,11 @@ import java.util.List;
 
 public interface UserService {
 
-    User getUser(String userId);
-    List<User> getUserList();
-
     UserResponseDTO createUser(CreateUserRequestDTO req);
+
+    UserResponseDTO findUserBy(String userId, String email);
+
+    UserResponseDTO getUserById(Long id);
     UserResponseDTO updateUser(UpdateUserRequestDTO req);
     void deleteUser(Long id);
 
