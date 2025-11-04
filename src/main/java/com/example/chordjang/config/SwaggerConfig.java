@@ -13,8 +13,8 @@ class SwaggerConfig {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("Course API")
-                        .description("Course API schema")
+                        .title("ChordJang API")
+                        .description("ChordJang API schema")
                         .version("1.0.0"));
     }
 }
