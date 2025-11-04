@@ -11,9 +11,10 @@ public interface UserService {
     UserResponseDTO createUser(CreateUserRequestDTO req);
 
     UserResponseDTO findUserBy(String userId, String email);
-
     UserResponseDTO getUserById(Long id);
+
     UserResponseDTO updateUser(UpdateUserRequestDTO req);
+
     void deleteUser(Long id);
 
 }
