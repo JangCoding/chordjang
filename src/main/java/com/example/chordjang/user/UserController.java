@@ -21,7 +21,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(res); // 응답 본문에 데이터 담아 보낼 때
     }
 
-
     @GetMapping
     public ResponseEntity<UserResponseDTO> findUserBy(
             @RequestParam(required = false) String userId,
