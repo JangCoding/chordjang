@@ -27,11 +27,7 @@ public class UserController {
             @RequestParam(required = false) String email){
 
             UserResponseDTO res = userService.findUserBy(userId, email);
-
-            if(res!=null)
-                return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
-
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping("/{id}")
@@ -41,8 +37,8 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody UpdateUserRequestDTO req){
-        UserResponseDTO res = userService.updateUser(req);
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody Long id, UpdateUserRequestDTO req){
+        UserResponseDTO res = userService.updateUser(id, req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
