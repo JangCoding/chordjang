@@ -4,16 +4,16 @@ import com.example.chordjang.user.DTO.CreateUserRequestDTO;
 import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
 import com.example.chordjang.user.DTO.UserResponseDTO;
 
-import java.util.List;
 
 public interface UserService {
 
     UserResponseDTO createUser(CreateUserRequestDTO req);
 
     UserResponseDTO findUserBy(String userId, String email);
-
     UserResponseDTO getUserById(Long id);
-    UserResponseDTO updateUser(UpdateUserRequestDTO req);
+
+    UserResponseDTO updateUser(Long id, UpdateUserRequestDTO req);
+
     void deleteUser(Long id);
 
 }

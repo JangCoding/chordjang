@@ -9,7 +9,7 @@ public enum ErrorCodeEnum {
     // 400 BAD_REQUEST
     INVALID_REQUEST(400, "INVALID_REQUEST", "잘못된 요청입니다."),
     INVALID_PARAMETER(400, "INVALID_PARAMETER", "요청 파라미터가 유효하지 않습니다."),
-    DUPLICATE_EMAIL(400, "DUPLICATE_EMAIL", "이미 등록된 이메일입니다."),
+
 
     // 401 UNAUTHORIZED
     UNAUTHORIZED(401, "UNAUTHORIZED", "인증이 필요합니다."),
@@ -24,6 +24,8 @@ public enum ErrorCodeEnum {
 
     // 409 CONFLICT
     CONFLICT(409, "CONFLICT", "데이터 충돌이 발생했습니다."),
+    ALREADY_EXIST_USERID(409, "ALREADY_EXIST_USERID", "이미 등록된 유저 아이디 입니다."),
+    ALREADY_EXIST_EMAIL(409, "ALREADY_EXIST_EMAIL", "이미 등록된 이메일입니다."),
 
     // 500 INTERNAL_SERVER_ERROR
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버 내부 오류가 발생했습니다.");

@@ -1,26 +1,37 @@
 package com.example.chordjang.user;
 
+import com.example.chordjang.exception.EmailAlreadyExistException;
+import com.example.chordjang.exception.ErrorCodeEnum;
+import com.example.chordjang.exception.UserIdAlreadyExistException;
+import com.example.chordjang.exception.UserNotFoundException;
 import com.example.chordjang.user.DTO.CreateUserRequestDTO;
 import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
 import com.example.chordjang.user.DTO.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
     @Override
     public UserResponseDTO createUser(CreateUserRequestDTO req) {
+
+        if(userRepository.findByUserId(req.getUserId()).isPresent())
+            throw new UserIdAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_USERID);
+
+        if(userRepository.findByEmail(req.getEmail()).isPresent())
+            throw new EmailAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL);
+
         User user = User.builder()
                 .userId(req.getUserId())
                 .email(req.getEmail())
                 .password(req.getPassword())
+                .role(RoleEnum.USER)
                 .build();
 
         return UserResponseDTO.fromEntity(userRepository.save(user));
@@ -29,26 +40,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO findUserBy(String userId, String email) {
         if(userId!=null)
-            return userRepository.findByUserId(userId).map(UserResponseDTO::fromEntity).orElse(null);
-        else if(email!=null)
-            return userRepository.findByEmail(email).map(UserResponseDTO::fromEntity).orElse(null);
-        else
-            throw new IllegalArgumentException("Unknown search type: ");
+            return userRepository.findByUserId(userId)
+                    .map(UserResponseDTO::fromEntity)
+                    .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+        if(email!=null)
+            return userRepository.findByEmail(email)
+                    .map(UserResponseDTO::fromEntity)
+                    .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Email", email));
+
+        throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요.");
     }
 
     @Override
     public UserResponseDTO getUserById(Long id) {
-        UserResponseDTO res =  userRepository.findById(id).map(UserResponseDTO::fromEntity).orElse(null);
-        return null;
+        return userRepository.findById(id)
+                .map(UserResponseDTO::fromEntity)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
     }
 
     @Override
-    public UserResponseDTO updateUser(UpdateUserRequestDTO req) {
-        return null;
+    @Transactional
+    public UserResponseDTO updateUser(Long id, UpdateUserRequestDTO req) {
+
+        //TODO 로그인 검증 과정 생략
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+
+        user.updateUser(req.getEmail());
+
+        return UserResponseDTO.fromEntity(user);   // @Transactional 변경 감지(Dirty Checking)되어 자동으로 DB에 반영.
     }
 
+
     @Override
+    @Transactional
     public void deleteUser(Long id) {
-
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+        userRepository.delete(user);
     }
 }
