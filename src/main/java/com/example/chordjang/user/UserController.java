@@ -1,11 +1,11 @@
 package com.example.chordjang.user;
 
-import com.example.chordjang.user.DTO.CreateUserRequestDTO;
 import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
 import com.example.chordjang.user.DTO.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,10 +15,18 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody CreateUserRequestDTO req){
-        UserResponseDTO res = userService.createUser(req);
-        return ResponseEntity.status(HttpStatus.CREATED).body(res); // 응답 본문에 데이터 담아 보낼 때
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getMyInfo(@AuthenticationPrincipal(expression = "username") String UserId) {
+        UserResponseDTO res = userService.findUserBy(UserId, null);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
+
+    @PatchMapping("/me")
+    public ResponseEntity<UserResponseDTO> updateUser(
+            @AuthenticationPrincipal(expression = "username") String userId,
+            @RequestBody UpdateUserRequestDTO req) {
+        UserResponseDTO res = userService.updateUser(userId, req);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping
@@ -34,12 +42,6 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
         UserResponseDTO res = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
-    }
-
-    @PatchMapping
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestBody Long id, UpdateUserRequestDTO req){
-        UserResponseDTO res = userService.updateUser(id, req);
-        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @DeleteMapping("/{id}")

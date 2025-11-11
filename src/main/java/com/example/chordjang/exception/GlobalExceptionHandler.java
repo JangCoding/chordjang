@@ -36,6 +36,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(res.getHttpStatus()).body(res);
     }
 
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(WrongPasswordException ex, HttpServletRequest req){
+        ErrorResponse res = buildRes(ErrorCodeEnum.INVALID_PASSWORD, ex, HttpStatus.UNAUTHORIZED, req);
+        return ResponseEntity.status(res.getHttpStatus()).body(res);
+    }
+
     private ErrorResponse buildRes(ErrorCodeEnum errCode, Exception ex, HttpStatus httpStatus, HttpServletRequest req){
         log.warn("{} : {}", ex.getClass().getSimpleName(), ex.getMessage());
 

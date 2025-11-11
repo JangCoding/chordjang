@@ -8,6 +8,7 @@ import com.example.chordjang.user.DTO.CreateUserRequestDTO;
 import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
 import com.example.chordjang.user.DTO.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDTO createUser(CreateUserRequestDTO req) {
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .userId(req.getUserId())
                 .email(req.getEmail())
-                .password(req.getPassword())
+                .password(passwordEncoder.encode(req.getPassword())) // 암호화
                 .role(RoleEnum.USER)
                 .build();
 
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
                     .map(UserResponseDTO::fromEntity)
                     .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Email", email));
 
-        throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요.");
+        throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId , Email = null ");
     }
 
     @Override
@@ -60,12 +62,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDTO updateUser(Long id, UpdateUserRequestDTO req) {
+    public UserResponseDTO updateUser(String userId, UpdateUserRequestDTO req) {
 
         //TODO 로그인 검증 과정 생략
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
 
         user.updateUser(req.getEmail());
 

@@ -10,10 +10,10 @@ public enum ErrorCodeEnum {
     INVALID_REQUEST(400, "INVALID_REQUEST", "잘못된 요청입니다."),
     INVALID_PARAMETER(400, "INVALID_PARAMETER", "요청 파라미터가 유효하지 않습니다."),
 
-
     // 401 UNAUTHORIZED
     UNAUTHORIZED(401, "UNAUTHORIZED", "인증이 필요합니다."),
     INVALID_TOKEN(401, "INVALID_TOKEN", "유효하지 않은 토큰입니다."),
+    INVALID_PASSWORD(401, "INVALID_PASSWORD", "유효하지 않은 비밀번호입니다."),
 
     // 403 FORBIDDEN
     FORBIDDEN(403, "FORBIDDEN", "권한이 없습니다."),
