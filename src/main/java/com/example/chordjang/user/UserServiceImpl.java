@@ -7,6 +7,7 @@ import com.example.chordjang.exception.UserNotFoundException;
 import com.example.chordjang.user.DTO.CreateUserRequestDTO;
 import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
 import com.example.chordjang.user.DTO.UserResponseDTO;
+import com.example.chordjang.userProfile.UserProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,10 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(req.getPassword())) // 암호화
                 .role(RoleEnum.USER)
                 .build();
+
+        UserProfile profile = UserProfile.builder().build(); // 초기값 세팅
+
+        user.setUserProfile(profile);
 
         return UserResponseDTO.fromEntity(userRepository.save(user));
     }

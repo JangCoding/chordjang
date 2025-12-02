@@ -1,5 +1,7 @@
 package com.example.chordjang.user;
 
+import com.example.chordjang.userProfile.UserProfile;
+import com.example.chordjang.userProfile.UserProfileRepository;
 import com.example.chordjang.util.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,15 +33,22 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     RoleEnum role;
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    UserProfile userProfile;
 
     @Builder
-    public User(String userId, String password, String email, RoleEnum role){
+    public User(String userId, String password, String email, RoleEnum role, UserProfile userProfile){
         // id 는 .save() 호출 시점에 자동 저장됨. build 시점까지는 null
         this.userId = userId;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.userProfile = userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile){
+        this.userProfile = userProfile;
+        userProfile.setUser(this);
     }
 
     public void updateUser(String newEmail){
@@ -47,7 +56,7 @@ public class User extends BaseEntity implements UserDetails {
             this.email =  newEmail;
     }
 
-
+    // UserDetails 를 상속받기 때문에 Override 필요
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(this.role.getKey()));
