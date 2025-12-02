@@ -1,18 +1,18 @@
 package com.example.chordjang.user;
 
-import com.example.chordjang.user.DTO.CreateUserRequestDTO;
-import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
-import com.example.chordjang.user.DTO.UserResponseDTO;
+import com.example.chordjang.user.DTO.CreateUserReqDTO;
+import com.example.chordjang.user.DTO.UpdateUserReqDTO;
+import com.example.chordjang.user.DTO.UserResDTO;
 
 
 public interface UserService {
 
-    UserResponseDTO createUser(CreateUserRequestDTO req);
+    UserResDTO createUser(CreateUserReqDTO req);
 
-    UserResponseDTO findUserBy(String userId, String email);
-    UserResponseDTO getUserById(Long id);
+    UserResDTO findUserBy(String userId, String email);
+    UserResDTO getUserById(Long id);
 
-    UserResponseDTO updateUser(String userId, UpdateUserRequestDTO req);
+    UserResDTO updateUser(String userId, UpdateUserReqDTO req);
 
     void deleteUser(Long id);
 

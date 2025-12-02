@@ -1,8 +1,8 @@
 package com.example.chordjang.user;
 
 import com.example.chordjang.userProfile.UserProfile;
-import com.example.chordjang.userProfile.UserProfileRepository;
 import com.example.chordjang.util.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Getter
@@ -33,7 +32,8 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     RoleEnum role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_profile_id") // FK를 이 테이블에 둔다
     UserProfile userProfile;
 
     @Builder

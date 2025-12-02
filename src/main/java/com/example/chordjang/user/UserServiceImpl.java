@@ -4,9 +4,9 @@ import com.example.chordjang.exception.EmailAlreadyExistException;
 import com.example.chordjang.exception.ErrorCodeEnum;
 import com.example.chordjang.exception.UserIdAlreadyExistException;
 import com.example.chordjang.exception.UserNotFoundException;
-import com.example.chordjang.user.DTO.CreateUserRequestDTO;
-import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
-import com.example.chordjang.user.DTO.UserResponseDTO;
+import com.example.chordjang.user.DTO.CreateUserReqDTO;
+import com.example.chordjang.user.DTO.UpdateUserReqDTO;
+import com.example.chordjang.user.DTO.UserResDTO;
 import com.example.chordjang.userProfile.UserProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = false)
     @Override
-    public UserResponseDTO createUser(CreateUserRequestDTO req) {
+    public UserResDTO createUser(CreateUserReqDTO req) {
 
         if (userRepository.findByUserId(req.getUserId()).isPresent())
             throw new UserIdAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_USERID);
@@ -42,33 +42,33 @@ public class UserServiceImpl implements UserService {
 
         user.setUserProfile(profile);
 
-        return UserResponseDTO.fromEntity(userRepository.save(user));
+        return UserResDTO.fromEntity(userRepository.save(user));
     }
 
     @Override
-    public UserResponseDTO findUserBy(String userId, String email) {
+    public UserResDTO findUserBy(String userId, String email) {
         if (userId != null)
             return userRepository.findByUserId(userId)
-                    .map(UserResponseDTO::fromEntity)
+                    .map(UserResDTO::fromEntity)
                     .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
         if (email != null)
             return userRepository.findByEmail(email)
-                    .map(UserResponseDTO::fromEntity)
+                    .map(UserResDTO::fromEntity)
                     .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Email", email));
 
         throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId 와 Email 이 입력되지 않음. ) ");
     }
 
     @Override
-    public UserResponseDTO getUserById(Long id) {
+    public UserResDTO getUserById(Long id) {
         return userRepository.findById(id)
-                .map(UserResponseDTO::fromEntity)
+                .map(UserResDTO::fromEntity)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
     }
 
     @Override
     @Transactional
-    public UserResponseDTO updateUser(String userId, UpdateUserRequestDTO req) {
+    public UserResDTO updateUser(String userId, UpdateUserReqDTO req) {
 
         //TODO 로그인 검증 과정 생략
 
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
         user.updateUser(req.getEmail());
 
-        return UserResponseDTO.fromEntity(user);   // @Transactional 변경 감지(Dirty Checking)되어 자동으로 DB에 반영.
+        return UserResDTO.fromEntity(user);   // @Transactional 변경 감지(Dirty Checking)되어 자동으로 DB에 반영.
     }
 
 

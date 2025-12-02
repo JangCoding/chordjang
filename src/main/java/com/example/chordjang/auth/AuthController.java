@@ -1,7 +1,7 @@
 package com.example.chordjang.auth;
 
-import com.example.chordjang.user.DTO.CreateUserRequestDTO;
-import com.example.chordjang.user.DTO.UserResponseDTO;
+import com.example.chordjang.user.DTO.CreateUserReqDTO;
+import com.example.chordjang.user.DTO.UserResDTO;
 import com.example.chordjang.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDTO> signup(@Valid @RequestBody CreateUserRequestDTO req){
+    public ResponseEntity<UserResDTO> signup(@Valid @RequestBody CreateUserReqDTO req){
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(req));
     }
 
