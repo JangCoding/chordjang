@@ -1,7 +1,7 @@
 package com.example.chordjang.user;
 
-import com.example.chordjang.user.DTO.UpdateUserRequestDTO;
-import com.example.chordjang.user.DTO.UserResponseDTO;
+import com.example.chordjang.user.DTO.UpdateUserReqDTO;
+import com.example.chordjang.user.DTO.UserResDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +16,31 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponseDTO> getMyInfo(@AuthenticationPrincipal(expression = "username") String UserId) {
-        UserResponseDTO res = userService.findUserBy(UserId, null);
+    public ResponseEntity<UserResDTO> getMyInfo(@AuthenticationPrincipal(expression = "username") String UserId) {
+        UserResDTO res = userService.findUserBy(UserId, null);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UserResponseDTO> updateUser(
+    public ResponseEntity<UserResDTO> updateUser(
             @AuthenticationPrincipal(expression = "username") String userId,
-            @RequestBody UpdateUserRequestDTO req) {
-        UserResponseDTO res = userService.updateUser(userId, req);
+            @RequestBody UpdateUserReqDTO req) {
+        UserResDTO res = userService.updateUser(userId, req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping
-    public ResponseEntity<UserResponseDTO> findUserBy(
+    public ResponseEntity<UserResDTO> findUserBy(
             @RequestParam(required = false) String userId,
             @RequestParam(required = false) String email){
 
-            UserResponseDTO res = userService.findUserBy(userId, email);
+            UserResDTO res = userService.findUserBy(userId, email);
             return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id){
-        UserResponseDTO res = userService.getUserById(id);
+    public ResponseEntity<UserResDTO> getUserById(@PathVariable Long id){
+        UserResDTO res = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(res); // 응답 본문에 데이터 담아 보낼 때
     }
 

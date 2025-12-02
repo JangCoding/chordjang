@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class CreateUserRequestDTO {
+public class CreateUserReqDTO {
     @NotBlank(message = "아이디는 필수 입력 값입니다!")
     String userId;
 
