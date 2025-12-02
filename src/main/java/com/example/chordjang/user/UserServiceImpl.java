@@ -20,13 +20,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = false)
     @Override
     public UserResponseDTO createUser(CreateUserRequestDTO req) {
 
-        if(userRepository.findByUserId(req.getUserId()).isPresent())
+        if (userRepository.findByUserId(req.getUserId()).isPresent())
             throw new UserIdAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_USERID);
 
-        if(userRepository.findByEmail(req.getEmail()).isPresent())
+        if (userRepository.findByEmail(req.getEmail()).isPresent())
             throw new EmailAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL);
 
         User user = User.builder()
@@ -41,16 +42,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO findUserBy(String userId, String email) {
-        if(userId!=null)
+        if (userId != null)
             return userRepository.findByUserId(userId)
                     .map(UserResponseDTO::fromEntity)
                     .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
-        if(email!=null)
+        if (email != null)
             return userRepository.findByEmail(email)
                     .map(UserResponseDTO::fromEntity)
                     .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Email", email));
 
-        throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId , Email = null ");
+        throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId 와 Email 이 입력되지 않음. ) ");
     }
 
     @Override
