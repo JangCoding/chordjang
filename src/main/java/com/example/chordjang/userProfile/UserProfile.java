@@ -1,11 +1,11 @@
 package com.example.chordjang.userProfile;
 
 import com.example.chordjang.user.User;
+import com.example.chordjang.userProfile.DTO.UpdateUserProfileReqDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -15,19 +15,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "userProfiles")
+@Table(name = "user_profiles")
 public class UserProfile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     private int score;
     private int point;
     private int level;
-    private int exp;
+    private double exp;
+
+    // 기본값 FetchType.LAZY 적용 중
+    @OneToOne(mappedBy = "userProfile")     // userProfile = User 엔티티 필드명
+    private User user;
 
     @Builder
     public UserProfile(){
@@ -37,11 +36,10 @@ public class UserProfile {
         this.exp = 0;
     }
 
-    public void updateUserProfile(int score, int point, int level, int exp){
-        this.score = score;
-        this.point = point;
-        this.level = level;
-        this.exp = exp;
+    public void updatePartial(UpdateUserProfileReqDTO req) {
+        if (req.getScore() != null) this.score = req.getScore();
+        if (req.getPoint() != null) this.point = req.getPoint();
+        if (req.getLevel() != null) this.level = req.getLevel();
+        if (req.getExp() != null) this.exp = req.getExp();
     }
-
 }
