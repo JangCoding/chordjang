@@ -1,9 +1,8 @@
 package com.example.chordjang.user;
 
-import com.example.chordjang.exception.EmailAlreadyExistException;
 import com.example.chordjang.exception.ErrorCodeEnum;
-import com.example.chordjang.exception.UserIdAlreadyExistException;
-import com.example.chordjang.exception.UserNotFoundException;
+import com.example.chordjang.exception.TargetAlreadyExistException;
+import com.example.chordjang.exception.TargetNotFoundException;
 import com.example.chordjang.user.DTO.CreateUserReqDTO;
 import com.example.chordjang.user.DTO.UpdateUserReqDTO;
 import com.example.chordjang.user.DTO.UserResDTO;
@@ -26,10 +25,10 @@ public class UserServiceImpl implements UserService {
     public UserResDTO createUser(CreateUserReqDTO req) {
 
         if (userRepository.findByUserId(req.getUserId()).isPresent())
-            throw new UserIdAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_USERID);
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET);
 
         if (userRepository.findByEmail(req.getEmail()).isPresent())
-            throw new EmailAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL);
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL);
 
         User user = User.builder()
                 .userId(req.getUserId())
@@ -50,11 +49,11 @@ public class UserServiceImpl implements UserService {
         if (userId != null)
             return userRepository.findByUserId(userId)
                     .map(UserResDTO::fromEntity)
-                    .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
         if (email != null)
             return userRepository.findByEmail(email)
                     .map(UserResDTO::fromEntity)
-                    .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Email", email));
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND,  "Email", email));
 
         throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId 와 Email 이 입력되지 않음. ) ");
     }
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public UserResDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserResDTO::fromEntity)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
     }
 
     @Override
@@ -73,7 +72,7 @@ public class UserServiceImpl implements UserService {
         //TODO 로그인 검증 과정 생략
 
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
 
         user.updateUser(req.getEmail());
 
@@ -85,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
 
         user.delete();
     }

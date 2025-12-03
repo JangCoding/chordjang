@@ -3,10 +3,10 @@ package com.example.chordjang.exception;
 import lombok.Getter;
 
 @Getter
-public class UserIdAlreadyExistException extends RuntimeException {
+public class TargetAlreadyExistException extends RuntimeException {
     private final ErrorCodeEnum errorCode;
 
-    public UserIdAlreadyExistException(ErrorCodeEnum errorCode) {
+    public TargetAlreadyExistException(ErrorCodeEnum errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
