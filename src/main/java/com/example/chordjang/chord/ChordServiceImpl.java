@@ -4,6 +4,7 @@ import com.example.chordjang.chord.DTO.ChordResDTO;
 import com.example.chordjang.chord.DTO.CreateChordReqDTO;
 import com.example.chordjang.chord.DTO.UpdateChordReqDTO;
 import com.example.chordjang.exception.ErrorCodeEnum;
+import com.example.chordjang.exception.TargetAlreadyExistException;
 import com.example.chordjang.exception.TargetNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,19 @@ public class ChordServiceImpl implements ChordService {
     @Override
     @Transactional(readOnly = false)
     public ChordResDTO createChord(CreateChordReqDTO req) {
-        return ChordResDTO.fromEntity( chordRepository.save(req.toEntity()) );
+        InstrumentType type = ChordHepler.convertType(req.getType());
+        String frets="";
+
+        if(ChordHepler.isValidFrets(type, req.getFrets()))
+            frets = req.getFrets();
+
+        if(chordRepository.getChordsByRootNoteAndQualityAndFrets(req.getRootNote(), req.getQuality(), frets).isEmpty()) {
+            return ChordResDTO.fromEntity( chordRepository.save(req.toEntity()) );
+        }
+        else {
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_CHORD,
+                    "Chord", req.getType()+" "+req.getRootNote()+req.getType()+" "+req.getFrets());
+        }
     }
 
     @Override

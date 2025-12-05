@@ -1,20 +1,21 @@
 package com.example.chordjang.chord.DTO;
 
 import com.example.chordjang.chord.Chord;
-import com.example.chordjang.util.ChordValidator;
-import com.example.chordjang.util.InstrumentType;
+import com.example.chordjang.chord.ChordHepler;
+import com.example.chordjang.chord.InstrumentType;
+import com.example.chordjang.chord.Quality;
+import com.example.chordjang.chord.RootNote;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
 public class CreateChordReqDTO {
     @NotBlank(message = "코드명은 필수입니다.")
-    @Size(min = 1, max = 20, message = "코드 이름은 20자 이하여야 합니다.")
-    String name;
     @NotBlank(message = "악기타입은 필수입니다.")
     String type;
+    RootNote rootNote;
+    Quality quality;
     @NotBlank(message = "프렛 정보는 필수입니다.")
     @Pattern(
             regexp = "^([xX]|[0-9]{1,2})(,([xX]|[0-9]{1,2}))*$",
@@ -23,10 +24,11 @@ public class CreateChordReqDTO {
     String frets;
 
     public Chord toEntity(){
-        InstrumentType convertedType = ChordValidator.convertType(this.getType());
+        InstrumentType convertedType = ChordHepler.convertType(this.getType());
 
         return Chord.builder()
-                .name(this.getName())
+                .rootNote(this.getRootNote())
+                .quality(this.getQuality())
                 .type(convertedType)
                 .frets(this.getFrets())
                 .build();

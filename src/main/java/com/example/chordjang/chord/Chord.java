@@ -1,8 +1,6 @@
 package com.example.chordjang.chord;
 
 import com.example.chordjang.chord.DTO.UpdateChordReqDTO;
-import com.example.chordjang.util.ChordValidator;
-import com.example.chordjang.util.InstrumentType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,22 +19,25 @@ public class Chord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
     InstrumentType type;
+    RootNote rootNote;
+    Quality quality;
     String frets;
     // order G C E A?
 
     @Builder
-    public Chord(String name, InstrumentType type, String frets){
-        this.name = name;
+    public Chord(RootNote rootNote, Quality quality, InstrumentType type, String frets){
+        this.rootNote = rootNote;
+        this.quality = quality;
         this.type = type;
         this.frets = frets;
     }
 
     public void updateChord(UpdateChordReqDTO req){
-        if(req.getName() != null) this.name = req.getName();
-        if(req.getType() != null) this.type = ChordValidator.convertType(req.getType());
-        if(req.getFrets() != null && ChordValidator.isValidFrets(this.getType(), req.getFrets()))
+        if(req.getRootNote() != null) this.rootNote = req.getRootNote();
+        this.quality = req.getQuality();
+        if(req.getType() != null) this.type = ChordHepler.convertType(req.getType());
+        if(req.getFrets() != null && ChordHepler.isValidFrets(this.getType(), req.getFrets()))
             this.frets = req.getFrets();
     }
 }
