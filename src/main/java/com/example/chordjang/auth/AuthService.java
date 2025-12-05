@@ -1,7 +1,7 @@
 package com.example.chordjang.auth;
 
 import com.example.chordjang.exception.ErrorCodeEnum;
-import com.example.chordjang.exception.UserNotFoundException;
+import com.example.chordjang.exception.TargetNotFoundException;
 import com.example.chordjang.exception.WrongPasswordException;
 import com.example.chordjang.security.JwtTokenProvider;
 import com.example.chordjang.user.User;
@@ -19,7 +19,7 @@ public class AuthService {
 
     public TokenResponseDTO login(LoginRequestDTO req){
         User user = userRepository.findByUserId(req.getUserId())
-                .orElseThrow(()-> new UserNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserID", req.getUserId() ));
+                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserID", req.getUserId() ));
 
         if(!passwordEncoder.matches(req.getPassword(), user.getPassword()))
             throw new WrongPasswordException(ErrorCodeEnum.INVALID_PASSWORD);
