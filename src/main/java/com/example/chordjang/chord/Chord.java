@@ -35,7 +35,7 @@ public class Chord {
 
     public void updateChord(UpdateChordReqDTO req){
         if(req.getRootNote() != null) this.rootNote = req.getRootNote();
-        this.quality = req.getQuality();
+        if(req.getQuality() != null) this.quality = req.getQuality();
         if(req.getType() != null) this.type = ChordHepler.convertType(req.getType());
         if(req.getFrets() != null && ChordHepler.isValidFrets(this.getType(), req.getFrets()))
             this.frets = req.getFrets();

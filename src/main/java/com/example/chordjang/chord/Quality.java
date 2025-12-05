@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Quality {
     // 3화음 (Triads)
-    MAJ(null),        // C (메이저 코드는 일반적으로 기호를 생략합니다)
+    MAJ(""),        // C (메이저 코드는 일반적으로 기호를 생략합니다)
     MIN("m"),       // Cm
     DIM("dim"),     // Cdim
     AUG("aug"),     // Caug (+)

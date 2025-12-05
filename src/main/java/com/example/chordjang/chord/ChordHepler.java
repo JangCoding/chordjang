@@ -23,24 +23,25 @@ public class ChordHepler {
         }
     }
 
-    public static InstrumentType convertRootNote(String rootNote){
-
-        if (rootNote == null || rootNote.trim().isEmpty()) {
+    public static RootNote convertRootNote(String rootNote){
+        if (rootNote == null || rootNote.isEmpty()) {
             throw new InvalidParameterException(ErrorCodeEnum.INVALID_DTO_FIELD, "근음은 필수입니다.", "RootNote", rootNote);
         }
 
         try {
-            return InstrumentType.valueOf(rootNote.toUpperCase());
+            return RootNote.valueOf(rootNote.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(ErrorCodeEnum.INVALID_DTO_FIELD,
                     "지원하지 않는 근음입니다. (C,D,E,F,G,A,B)", "RootNote", rootNote );
         }
     }
 
-    public static InstrumentType convertQualtiy(String quality){
-
+    public static Quality convertQualtiy(String quality){
         try {
-            return InstrumentType.valueOf(quality.toUpperCase());
+            if ( quality.equals("MAJ"))
+                return Quality.MAJ;
+            else
+                return Quality.valueOf(quality.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(ErrorCodeEnum.INVALID_DTO_FIELD,
                     "지원하지 않는 성질입니다.", "Quality", quality );

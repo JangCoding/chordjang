@@ -2,11 +2,14 @@ package com.example.chordjang.chord;
 
 import com.example.chordjang.chord.DTO.ChordResDTO;
 import com.example.chordjang.chord.DTO.CreateChordReqDTO;
+import com.example.chordjang.chord.DTO.SearchChordReqDTO;
 import com.example.chordjang.chord.DTO.UpdateChordReqDTO;
 import com.example.chordjang.exception.ErrorCodeEnum;
+import com.example.chordjang.exception.InvalidParameterException;
 import com.example.chordjang.exception.TargetAlreadyExistException;
 import com.example.chordjang.exception.TargetNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,12 +43,32 @@ public class ChordServiceImpl implements ChordService {
 
     @Override
     public ChordResDTO getChord(Long id) {
-        return null;
+        Chord chord = chordRepository.findById(id)
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", id));
+        return ChordResDTO.fromEntity(chord);
     }
 
     @Override
-    public List<ChordResDTO> getChordList(Long id, String name, String Type) {
-        return List.of();
+    public List<ChordResDTO> searchChord(SearchChordReqDTO req) {
+
+        Specification<Chord> spec = Specification.unrestricted();
+
+        if (req.getId() != null) {
+            Chord chord = chordRepository.findById(req.getId())
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", req.getId()));
+            return List.of(ChordResDTO.fromEntity(chord));
+        }
+
+        if (req.getRootNote() != null)
+            spec = spec.and(ChordSpecs.equalRootNote(req.getRootNote()));
+
+        if (req.getQuality() != null)
+            spec = spec.and(ChordSpecs.equalQuality(req.getQuality()));
+
+        if(req.getType() != null)
+            spec = spec.and(ChordSpecs.equalType(ChordHepler.convertType(req.getType())));
+
+        return chordRepository.findAll(spec).stream().map(ChordResDTO::fromEntity).toList();
     }
 
     @Override
@@ -56,14 +79,13 @@ public class ChordServiceImpl implements ChordService {
 
         chord.updateChord(req);
 
-        return ChordResDTO.builder().build();
+        return ChordResDTO.fromEntity(chord);
     }
 
     @Override
     public void deleteChord(Long id) {
         Chord chord = chordRepository.findById(id)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", id));
-
         chordRepository.delete(chord);
     }
 }

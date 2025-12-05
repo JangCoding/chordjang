@@ -15,16 +15,16 @@ public class ChordResDTO {
     Long id;
     InstrumentType type;
     RootNote rootNote;
-    Quality quality;
+    String quality;
     Map<String,String> fretMap;
 
     public static ChordResDTO fromEntity(Chord chord){
 
         return ChordResDTO.builder()
                 .id(chord.getId())
-                .rootNote(chord.getRootNote())
-                .quality(chord.getQuality())
                 .type(chord.getType())
+                .rootNote(chord.getRootNote())
+                .quality(chord.getQuality().getSimbol())
                 .fretMap(ChordHepler.setFretMap(chord.getType(), chord.getFrets()))
                 .build();
     }

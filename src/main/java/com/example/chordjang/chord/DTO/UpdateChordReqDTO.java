@@ -4,7 +4,6 @@ import com.example.chordjang.chord.Quality;
 import com.example.chordjang.chord.RootNote;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
@@ -12,7 +11,6 @@ public class UpdateChordReqDTO {
     @NotBlank(message =  "ID 값은 필수입니다.")
     Long id;
     String type;
-    @Size(max = 20, message = "코드 이름은 20자 이하여야 합니다.")
     RootNote rootNote;
     Quality quality;
     @Pattern(

@@ -11,12 +11,13 @@ import lombok.Getter;
 
 @Getter
 public class CreateChordReqDTO {
-    @NotBlank(message = "코드명은 필수입니다.")
-    @NotBlank(message = "악기타입은 필수입니다.")
+    @NotBlank(message = "악기타입이 입력되지 않았습니다.")
     String type;
+    @NotBlank(message = "코드의 근음이 입력되지 않았습니다.")
     RootNote rootNote;
+    @NotBlank(message = "코드의 성질이 입력되지 않았습니다.")
     Quality quality;
-    @NotBlank(message = "프렛 정보는 필수입니다.")
+    @NotBlank(message = "코드의 운지법이 입력되지 않았습니다.")
     @Pattern(
             regexp = "^([xX]|[0-9]{1,2})(,([xX]|[0-9]{1,2}))*$",
             message = "운지법 정보는 'x' 또는 1~2자리 숫자로 이루어져야 하며, 콤마(,)로 구분되어야 합니다. 예: 9,13,10,3"
