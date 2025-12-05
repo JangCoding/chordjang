@@ -6,8 +6,8 @@ import lombok.Getter;
 public class TargetAlreadyExistException extends RuntimeException {
     private final ErrorCodeEnum errorCode;
 
-    public TargetAlreadyExistException(ErrorCodeEnum errorCode) {
-        super(errorCode.getMessage());
+    public TargetAlreadyExistException(ErrorCodeEnum errorCode, String fieldName, String value) {
+        super(String.format("%s (%s : %s)", errorCode.getMessage(), fieldName, value));
         this.errorCode = errorCode;
     }
 }

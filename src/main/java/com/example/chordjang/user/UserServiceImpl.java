@@ -25,10 +25,10 @@ public class UserServiceImpl implements UserService {
     public UserResDTO createUser(CreateUserReqDTO req) {
 
         if (userRepository.findByUserId(req.getUserId()).isPresent())
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET);
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_USER, "UserID", req.getUserId());
 
         if (userRepository.findByEmail(req.getEmail()).isPresent())
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL);
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL, "Email", req.getEmail());
 
         User user = User.builder()
                 .userId(req.getUserId())
