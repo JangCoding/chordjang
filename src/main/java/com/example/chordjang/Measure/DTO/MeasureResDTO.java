@@ -16,10 +16,10 @@ public class MeasureResDTO {
     String info;
     String stroke;
 
-    public static MeasureResDTO fromEntity(Measure measure){
+    public static MeasureResDTO fromEntity(Measure measure, int measureNo){
         return MeasureResDTO.builder()
                 .id(measure.getId())
-                .measureNo(measure.getMeasureNo())
+                .measureNo(measureNo)
                 .lyric(measure.getLyric())
                 .chords(measure.getChords())
                 .timeSignature(measure.getTimeSignature())
