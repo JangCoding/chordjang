@@ -1,28 +1,32 @@
 package com.example.chordjang.musicSheet;
 
-import com.example.chordjang.musicSheet.DTO.CreateMusicSheetReqDTO;
 import com.example.chordjang.musicSheet.DTO.MusicSheetResDTO;
 import com.example.chordjang.musicSheet.DTO.SearchMusicSheetReqDTO;
-import com.example.chordjang.musicSheet.DTO.UpdateMusicSheetReqDTO;
+import com.example.chordjang.musicSheet.DTO.MusicSheetReqDTO;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/musicSheet")
-@NoArgsConstructor
+@RestController
+@RequestMapping("/musicSheet")
+@RequiredArgsConstructor
 public class MusicSheetController {
-    private MusicSheetService musicSheetService;
+    private final MusicSheetService musicSheetService;
 
     @PostMapping
-    public ResponseEntity<MusicSheetResDTO> createMusicSheet(@RequestBody CreateMusicSheetReqDTO req) {
+    public ResponseEntity<MusicSheetResDTO> createMusicSheet(@RequestBody MusicSheetReqDTO req) {
         MusicSheetResDTO res = musicSheetService.createMusicSheet(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
@@ -33,21 +37,21 @@ public class MusicSheetController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PostMapping
+    @GetMapping("/search")
     public ResponseEntity<List<MusicSheetResDTO>> searchMusicSheet(@RequestBody SearchMusicSheetReqDTO req) {
         List<MusicSheetResDTO> res = musicSheetService.searchMusicSheet(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
 
-    @PostMapping
-    public ResponseEntity<MusicSheetResDTO> updateMusicSheet(@RequestBody UpdateMusicSheetReqDTO req) {
-        MusicSheetResDTO res = musicSheetService.updateMusicSheet(req);
+    @PutMapping("/{id}")
+    public ResponseEntity<MusicSheetResDTO> updateMusicSheet(@PathVariable Long id, @RequestBody MusicSheetReqDTO req) {
+        MusicSheetResDTO res = musicSheetService.updateMusicSheet(id, req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteMusicSheet(Long id) {
+    public ResponseEntity<Void> deleteMusicSheet(@RequestParam Long id) {
         musicSheetService.deleteMusicSheet(id);
         return ResponseEntity.noContent().build();
     }
