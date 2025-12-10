@@ -70,7 +70,7 @@ public class ChordHepler {
     public static Map<String, String> setFretMap(InstrumentType type, String fretString){
 
         Map<String, String> fretMap = new LinkedHashMap<>();
-        String[] fretList =fretString.split(",");
+        String[] fretList = fretString.split(",");
         String[] order;
 
         switch(type){

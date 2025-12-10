@@ -1,6 +1,5 @@
 package com.example.chordjang.userProfile;
 
-import com.example.chordjang.user.UserService;
 import com.example.chordjang.userProfile.DTO.UpdateUserProfileReqDTO;
 import com.example.chordjang.userProfile.DTO.UserProfileResDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +18,13 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<UserProfileResDTO> getUserProfile(
             @AuthenticationPrincipal(expression = "username") String userId) {
         return ResponseEntity.ok().body(userProfileService.getUserProfile(userId));
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<UserProfileResDTO> updateUserProfile(
             @AuthenticationPrincipal(expression = "username") String userId,
             @RequestBody UpdateUserProfileReqDTO req) {

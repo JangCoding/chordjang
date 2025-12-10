@@ -1,0 +1,15 @@
+package com.example.chordjang.musicSheet;
+
+import com.example.chordjang.musicSheet.DTO.MusicSheetResDTO;
+import com.example.chordjang.musicSheet.DTO.SearchMusicSheetReqDTO;
+import com.example.chordjang.musicSheet.DTO.MusicSheetReqDTO;
+
+import java.util.List;
+
+public interface MusicSheetService {
+    public MusicSheetResDTO createMusicSheet(MusicSheetReqDTO req);
+    public MusicSheetResDTO getMusicSheet(Long id);
+    public List<MusicSheetResDTO> searchMusicSheet(SearchMusicSheetReqDTO req);
+    public MusicSheetResDTO updateMusicSheet(Long id, MusicSheetReqDTO req);
+    public void deleteMusicSheet(Long id);
+}

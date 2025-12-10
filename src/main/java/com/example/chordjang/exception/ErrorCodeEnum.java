@@ -22,6 +22,8 @@ public enum ErrorCodeEnum {
     // 404 NOT_FOUND
     USER_NOT_FOUND(404, "USER_NOT_FOUND", "해당 유저를 찾을 수 없습니다."),
     CHORD_NOT_FOUND(404, "CHORD_NOT_FOUND", "해당 코드를 찾을 수 없습니다."),
+    MEASURE_NOT_FOUND(404, "MEASURE_NOT_FOUND", "해당 마디를 찾을 수 없습니다."),
+    MUSIC_SHEET_NOT_FOUND(404, "MUSIC_SHEET_NOT_FOUND", "해당 악보를 찾을 수 없습니다."),
 
     // 409 CONFLICT
     CONFLICT(409, "CONFLICT", "데이터 충돌이 발생했습니다."),

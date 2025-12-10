@@ -1,5 +1,23 @@
 package com.example.chordjang.chord;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum RootNote {
-   C, C_SHARP, D, D_SHARP, E, F, F_SHARP, G, G_SHARP, A, A_SHARP, B
+    C("C"),
+    C_SHARP("C#"),
+    D("D"),
+    D_SHARP("D#"),
+    E("E"),
+    F("F"),
+    F_SHARP("F#"),
+    G("G"),
+    G_SHARP("G#"),
+    A("A"),
+    A_SHARP("A#"),
+    B("B");
+
+   private final String simbol;
 }
