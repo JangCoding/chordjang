@@ -7,7 +7,9 @@ import com.example.chordjang.chord.DTO.UpdateChordReqDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +32,8 @@ public class ChordController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @GetMapping
-    public ResponseEntity<ChordResDTO> getChord(@RequestParam Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<ChordResDTO> getChord(@PathVariable Long id){
         ChordResDTO res = chordService.getChord(id);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
@@ -48,10 +50,9 @@ public class ChordController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @PutMapping("/delete")
-    public ResponseEntity<Void> deleteChord(@RequestParam Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteChord(@PathVariable Long id){
         chordService.deleteChord(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

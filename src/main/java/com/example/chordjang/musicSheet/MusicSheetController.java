@@ -31,13 +31,13 @@ public class MusicSheetController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @GetMapping
-    public ResponseEntity<MusicSheetResDTO> getMusicSheet(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<MusicSheetResDTO> getMusicSheet(@PathVariable Long id) {
         MusicSheetResDTO res = musicSheetService.getMusicSheet(id);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<List<MusicSheetResDTO>> searchMusicSheet(@RequestBody SearchMusicSheetReqDTO req) {
         List<MusicSheetResDTO> res = musicSheetService.searchMusicSheet(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -50,8 +50,8 @@ public class MusicSheetController {
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteMusicSheet(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMusicSheet(@PathVariable Long id) {
         musicSheetService.deleteMusicSheet(id);
         return ResponseEntity.noContent().build();
     }

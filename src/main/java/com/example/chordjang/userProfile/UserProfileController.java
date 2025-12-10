@@ -19,13 +19,13 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<UserProfileResDTO> getUserProfile(
             @AuthenticationPrincipal(expression = "username") String userId) {
         return ResponseEntity.ok().body(userProfileService.getUserProfile(userId));
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<UserProfileResDTO> updateUserProfile(
             @AuthenticationPrincipal(expression = "username") String userId,
             @RequestBody UpdateUserProfileReqDTO req) {
