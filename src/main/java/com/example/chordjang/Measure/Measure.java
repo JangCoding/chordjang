@@ -57,6 +57,7 @@ public class Measure {
     }
 
     public void setMusicSheet(MusicSheet musicSheet) {
-        this.musicSheet = musicSheet;
+        if (musicSheet != null)
+            this.musicSheet = musicSheet;
     }
 }

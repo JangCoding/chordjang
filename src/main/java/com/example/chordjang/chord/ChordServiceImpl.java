@@ -44,7 +44,7 @@ public class ChordServiceImpl implements ChordService {
     @Override
     public ChordResDTO getChord(Long id) {
         Chord chord = chordRepository.findById(id)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", id));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", id));
         return ChordResDTO.fromEntity(chord);
     }
 
@@ -55,7 +55,7 @@ public class ChordServiceImpl implements ChordService {
 
         if (req.getId() != null) {
             Chord chord = chordRepository.findById(req.getId())
-                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", req.getId()));
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", req.getId()));
             return List.of(ChordResDTO.fromEntity(chord));
         }
 
@@ -75,7 +75,7 @@ public class ChordServiceImpl implements ChordService {
     @Transactional(readOnly = false)
     public ChordResDTO updateChord(UpdateChordReqDTO req) {
         Chord chord = chordRepository.findById(req.getId())
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", req.getId()));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", req.getId()));
 
         chord.updateChord(req);
 
@@ -85,7 +85,7 @@ public class ChordServiceImpl implements ChordService {
     @Override
     public void deleteChord(Long id) {
         Chord chord = chordRepository.findById(id)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.CHORD_NOT_FOUND, "Id", id));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", id));
         chordRepository.delete(chord);
     }
 }
