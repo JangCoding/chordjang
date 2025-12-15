@@ -49,11 +49,11 @@ public class UserServiceImpl implements UserService {
         if (userId != null)
             return userRepository.findByUserId(userId)
                     .map(UserResDTO::fromEntity)
-                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", userId));
         if (email != null)
             return userRepository.findByEmail(email)
                     .map(UserResDTO::fromEntity)
-                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND,  "Email", email));
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User",  "Email", email));
 
         throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId 와 Email 이 입력되지 않음. ) ");
     }
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public UserResDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserResDTO::fromEntity)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", id));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         //TODO 로그인 검증 과정 생략
 
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
         user.updateUser(req.getEmail());
 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "Id", id));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", id));
 
         user.delete();
     }

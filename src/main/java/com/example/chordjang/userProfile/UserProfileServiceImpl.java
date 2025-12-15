@@ -16,7 +16,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfileResDTO getUserProfile(String userId) {
         UserProfile userProfile = userProfileRepository.findByUser_UserId(userId)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
         return UserProfileResDTO.fromEntity(userProfile);
     }
@@ -24,7 +24,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfileResDTO updateUserProfile(String userId, UpdateUserProfileReqDTO req) {
         UserProfile userProfile = userProfileRepository.findByUser_UserId(userId)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserId", userId));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
         userProfile.updatePartial(req);
 

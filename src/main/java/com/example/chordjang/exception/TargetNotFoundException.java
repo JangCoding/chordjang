@@ -6,8 +6,8 @@ import lombok.Getter;
 public class TargetNotFoundException extends RuntimeException {
     private final ErrorCodeEnum errorCode;
 
-    public TargetNotFoundException(ErrorCodeEnum errorCode, String by, Object value) {
-        super(String.format("%s (%s: %s)", errorCode.getMessage(), by, value));
+    public TargetNotFoundException(ErrorCodeEnum errorCode, String target, String by, Object value) {
+        super(String.format("%s (%s-%s : %s)", errorCode.getMessage(), target, by, value));
         this.errorCode = errorCode;
     }
 }

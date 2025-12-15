@@ -19,7 +19,7 @@ public class AuthService {
 
     public TokenResponseDTO login(LoginRequestDTO req){
         User user = userRepository.findByUserId(req.getUserId())
-                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "UserID", req.getUserId() ));
+                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", req.getUserId() ));
 
         if(!passwordEncoder.matches(req.getPassword(), user.getPassword()))
             throw new WrongPasswordException(ErrorCodeEnum.INVALID_PASSWORD);

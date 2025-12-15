@@ -27,24 +27,18 @@ public class MusicSheetServiceImpl implements MusicSheetService {
     @Override
     @Transactional
     public MusicSheetResDTO createMusicSheet(MusicSheetReqDTO req) {
+        return MusicSheetResDTO.fromEntity(createEntity(req));
+    }
+
+    public MusicSheet createEntity(MusicSheetReqDTO req) {
         MusicSheet newMusicSheet = MusicSheet.from(req);
-
-        for (int i=0; i < req.getMeasureReqDTOList().size();i++) {
-            MeasureReqDTO reqDTO = req.getMeasureReqDTOList().get(i);
-            Measure newMeasure = Measure.from(reqDTO);
-            newMeasure.setMusicSheet(newMusicSheet);
-            newMusicSheet.addMeasure(newMeasure);
-        }
-
-        musicSheetRepository.save(newMusicSheet);
-
-        return MusicSheetResDTO.fromEntity(newMusicSheet);
+        return musicSheetRepository.save(newMusicSheet);
     }
 
     @Override
     public MusicSheetResDTO getMusicSheet(Long id) {
         return MusicSheetResDTO.fromEntity(musicSheetRepository.findById(id)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.MUSIC_SHEET_NOT_FOUND, "MusicSheetId", id)));
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "MusicSheet", "Id", id)));
     }
 
     @Override
@@ -57,29 +51,10 @@ public class MusicSheetServiceImpl implements MusicSheetService {
     public MusicSheetResDTO updateMusicSheet(Long id, MusicSheetReqDTO req) {
 
         MusicSheet musicSheet = musicSheetRepository.findById(id)
-                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.MUSIC_SHEET_NOT_FOUND, "MusicSheetId", id));
+                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "MusicSheet", "Id", id));
 
-        Map<Long, Measure> measureMap = musicSheet.getMeasures().stream()
-                .collect(Collectors.toMap(
-                        Measure::getId,      // Key
-                        Function.identity() // Value 그대로 사용
-                ));
+        musicSheet.update(req);
 
-        for(int i=0;i<req.getMeasureReqDTOList().size();i++) {
-            MeasureReqDTO measureReqDTO = req.getMeasureReqDTOList().get(i);
-            Long measureId = measureReqDTO.getId();
-            if(measureId != null) {  // 기존 마디 업데이트
-                Measure measure = measureMap.get(measureId);
-                if(measure != null) {
-                    measure.update(measureReqDTO);
-                    measureMap.remove(measureId);   // 처리 후 Map 에서 지움
-                }
-            } else {  // 새 마디 생성
-                Measure measure = Measure.from(measureReqDTO);
-                musicSheet.addMeasure(measure);
-            }
-        }
-        musicSheet.getMeasures().removeAll(measureMap.values());
         return MusicSheetResDTO.fromEntity(musicSheetRepository.save(musicSheet));
     }
 
