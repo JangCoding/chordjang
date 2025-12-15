@@ -8,6 +8,7 @@ import java.util.List;
 
 @Getter
 public class MusicSheetReqDTO {
+    Long id;    // sheetPost 에서 update 시 사용.
     String title;
     String singer;
     String writer;

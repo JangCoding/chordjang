@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface MusicSheetService {
     public MusicSheetResDTO createMusicSheet(MusicSheetReqDTO req);
+    MusicSheet createEntity(MusicSheetReqDTO req);
     public MusicSheetResDTO getMusicSheet(Long id);
     public List<MusicSheetResDTO> searchMusicSheet(SearchMusicSheetReqDTO req);
     public MusicSheetResDTO updateMusicSheet(Long id, MusicSheetReqDTO req);
