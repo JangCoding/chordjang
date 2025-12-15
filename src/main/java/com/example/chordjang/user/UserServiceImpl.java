@@ -25,10 +25,13 @@ public class UserServiceImpl implements UserService {
     public UserResDTO createUser(CreateUserReqDTO req) {
 
         if (userRepository.findByUserId(req.getUserId()).isPresent())
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_USER, "UserID", req.getUserId());
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "유저", "UserID", req.getUserId());
 
         if (userRepository.findByEmail(req.getEmail()).isPresent())
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_EMAIL, "Email", req.getEmail());
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "이메일", "Email", req.getEmail());
+
+        if (userRepository.findByNickName(req.getNickName()).isPresent())
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "닉네임", "NickName", req.getNickName());
 
         User user = User.builder()
                 .userId(req.getUserId())
@@ -74,7 +77,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
-        user.updateUser(req.getEmail());
+        user.update(req);
 
         return UserResDTO.fromEntity(user);   // @Transactional 변경 감지(Dirty Checking)되어 자동으로 DB에 반영.
     }

@@ -36,7 +36,7 @@ public class ChordServiceImpl implements ChordService {
             return ChordResDTO.fromEntity( chordRepository.save(req.toEntity()) );
         }
         else {
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_CHORD,
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "코드",
                     "Chord", req.getType()+" "+req.getRootNote()+req.getType()+" "+req.getFrets());
         }
     }
