@@ -1,6 +1,6 @@
-package com.example.chordjang.Measure;
+package com.example.chordjang.measure;
 
-import com.example.chordjang.Measure.DTO.MeasureReqDTO;
+import com.example.chordjang.measure.DTO.MeasureReqDTO;
 import com.example.chordjang.musicSheet.MusicSheet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

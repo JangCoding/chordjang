@@ -1,7 +1,7 @@
-package com.example.chordjang.Measure.DTO;
+package com.example.chordjang.measure.DTO;
 
-import com.example.chordjang.Measure.Measure;
-import com.example.chordjang.Measure.TimeSignature;
+import com.example.chordjang.measure.Measure;
+import com.example.chordjang.measure.TimeSignature;
 import lombok.Builder;
 import lombok.Getter;
 

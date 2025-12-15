@@ -1,7 +1,7 @@
 package com.example.chordjang.musicSheet.DTO;
 
-import com.example.chordjang.Measure.DTO.MeasureResDTO;
-import com.example.chordjang.Measure.Measure;
+import com.example.chordjang.measure.DTO.MeasureResDTO;
+import com.example.chordjang.measure.Measure;
 import com.example.chordjang.chord.RootNote;
 import com.example.chordjang.musicSheet.MusicSheet;
 import lombok.Builder;

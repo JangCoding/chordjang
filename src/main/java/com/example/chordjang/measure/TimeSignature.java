@@ -1,4 +1,4 @@
-package com.example.chordjang.Measure;
+package com.example.chordjang.measure;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

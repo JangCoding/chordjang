@@ -1,4 +1,4 @@
-package com.example.chordjang.Measure.DTO;
+package com.example.chordjang.measure.DTO;
 
 import lombok.Getter;
 

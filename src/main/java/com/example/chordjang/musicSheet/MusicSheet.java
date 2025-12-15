@@ -1,7 +1,7 @@
 package com.example.chordjang.musicSheet;
 
-import com.example.chordjang.Measure.DTO.MeasureReqDTO;
-import com.example.chordjang.Measure.Measure;
+import com.example.chordjang.measure.DTO.MeasureReqDTO;
+import com.example.chordjang.measure.Measure;
 import com.example.chordjang.SheetPost.SheetPost;
 import com.example.chordjang.chord.RootNote;
 import com.example.chordjang.exception.ErrorCodeEnum;
