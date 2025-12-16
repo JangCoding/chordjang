@@ -44,18 +44,18 @@ public class UserServiceImpl implements UserService {
 
         user.setUserProfile(profile);
 
-        return UserResDTO.fromEntity(userRepository.save(user));
+        return UserResDTO.from(userRepository.save(user));
     }
 
     @Override
     public UserResDTO findUserBy(String loginId, String email) {
         if (loginId != null)
             return userRepository.findByLoginId(loginId)
-                    .map(UserResDTO::fromEntity)
+                    .map(UserResDTO::from)
                     .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", loginId));
         if (email != null)
             return userRepository.findByEmail(email)
-                    .map(UserResDTO::fromEntity)
+                    .map(UserResDTO::from)
                     .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User",  "Email", email));
 
         throw new IllegalArgumentException("입력 조건을 정확히 입력해주세요. ( UserId 와 Email 이 입력되지 않음. ) ");
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResDTO getUserById(Long id) {
         return userRepository.findById(id)
-                .map(UserResDTO::fromEntity)
+                .map(UserResDTO::from)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", id));
     }
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
         user.update(req);
 
-        return UserResDTO.fromEntity(user);   // @Transactional 변경 감지(Dirty Checking)되어 자동으로 DB에 반영.
+        return UserResDTO.from(user);   // @Transactional 변경 감지(Dirty Checking)되어 자동으로 DB에 반영.
     }
 
 

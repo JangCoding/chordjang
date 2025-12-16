@@ -16,14 +16,14 @@ public class UserResDTO {
     private final RoleEnum role;
     private final UserProfileResDTO userProfile;
 
-    public static UserResDTO fromEntity(User user){
+    public static UserResDTO from(User user){
         return UserResDTO.builder()
                 .id(user.getId())
                 .loginId(user.getLoginId())
                 .email(user.getEmail())
                 .nickName(user.getNickName())
                 .role(user.getRole())
-                .userProfile(UserProfileResDTO.fromEntity(user.getUserProfile()))
+                .userProfile(UserProfileResDTO.from(user.getUserProfile()))
                 .build();
     }
 }

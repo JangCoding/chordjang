@@ -12,7 +12,7 @@ public class UserProfileResDTO {
         private int level;
         private double exp;
 
-        public static UserProfileResDTO fromEntity(UserProfile userProfile) {
+        public static UserProfileResDTO from(UserProfile userProfile) {
             return UserProfileResDTO.builder()
                     .score(userProfile.getScore())
                     .point(userProfile.getPoint())
