@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResDTO createUser(CreateUserReqDTO req) {
 
-        if (userRepository.findByUserId(req.getUserId()).isPresent())
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "유저", "UserID", req.getUserId());
+        if (userRepository.findByLoginId(req.getLoginId()).isPresent())
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "유저", "UserID", req.getLoginId());
 
         if (userRepository.findByEmail(req.getEmail()).isPresent())
             throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "이메일", "Email", req.getEmail());
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "닉네임", "NickName", req.getNickName());
 
         User user = User.builder()
-                .userId(req.getUserId())
+                .loginId(req.getLoginId())
                 .email(req.getEmail())
                 .password(passwordEncoder.encode(req.getPassword())) // 암호화
                 .role(RoleEnum.USER)
@@ -48,11 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResDTO findUserBy(String userId, String email) {
-        if (userId != null)
-            return userRepository.findByUserId(userId)
+    public UserResDTO findUserBy(String loginId, String email) {
+        if (loginId != null)
+            return userRepository.findByLoginId(loginId)
                     .map(UserResDTO::fromEntity)
-                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", userId));
+                    .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", loginId));
         if (email != null)
             return userRepository.findByEmail(email)
                     .map(UserResDTO::fromEntity)
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
         //TODO 로그인 검증 과정 생략
 
-        User user = userRepository.findByUserId(userId)
+        User user = userRepository.findByLoginId(userId)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
         user.update(req);

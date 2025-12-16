@@ -16,8 +16,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserResDTO> getMyInfo(@AuthenticationPrincipal(expression = "username") String UserId) {
-        UserResDTO res = userService.findUserBy(UserId, null);
+    public ResponseEntity<UserResDTO> getMyInfo(@AuthenticationPrincipal(expression = "username") String userId) {
+        UserResDTO res = userService.findUserBy(userId, null);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 

@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -25,7 +26,8 @@ public class UserProfile {
     private double exp;
 
     // 기본값 FetchType.LAZY 적용 중
-    @OneToOne(mappedBy = "userProfile")     // userProfile = User 엔티티 필드명
+    @OneToOne     // userProfile = User 엔티티 필드명
+    @JoinColumn(name = "user_id") // FK를 이 테이블에 둔다
     private User user;
 
     @Builder
