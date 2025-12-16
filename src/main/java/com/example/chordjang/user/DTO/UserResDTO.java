@@ -9,17 +9,21 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserResDTO {
-    private final String userId;
+    private final Long id;
+    private final String loginId;
     private final String email;
+    private final String nickName;
     private final RoleEnum role;
     private final UserProfileResDTO userProfile;
 
-    public static UserResDTO fromEntity(User user){
+    public static UserResDTO from(User user){
         return UserResDTO.builder()
-                .userId(user.getUserId())
+                .id(user.getId())
+                .loginId(user.getLoginId())
                 .email(user.getEmail())
+                .nickName(user.getNickName())
                 .role(user.getRole())
-                .userProfile(UserProfileResDTO.fromEntity(user.getUserProfile()))
+                .userProfile(UserProfileResDTO.from(user.getUserProfile()))
                 .build();
     }
 }

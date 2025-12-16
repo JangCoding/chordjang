@@ -5,7 +5,6 @@ import com.example.chordjang.measure.TimeSignature;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
 public class MeasureResDTO {
     Long id;
@@ -16,7 +15,7 @@ public class MeasureResDTO {
     String info;
     String stroke;
 
-    public static MeasureResDTO fromEntity(Measure measure, int measureNo){
+    public static MeasureResDTO from(Measure measure, int measureNo){
         return MeasureResDTO.builder()
                 .id(measure.getId())
                 .measureNo(measureNo)

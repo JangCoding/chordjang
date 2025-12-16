@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class MusicSheetServiceImpl implements MusicSheetService {
     private final MusicSheetRepository musicSheetRepository;
 
@@ -22,7 +22,7 @@ public class MusicSheetServiceImpl implements MusicSheetService {
     @Override
     @Transactional
     public MusicSheetResDTO createMusicSheet(MusicSheetReqDTO req) {
-        return MusicSheetResDTO.fromEntity(createEntity(req));
+        return MusicSheetResDTO.from(createEntity(req));
     }
 
     public MusicSheet createEntity(MusicSheetReqDTO req) {
@@ -31,12 +31,14 @@ public class MusicSheetServiceImpl implements MusicSheetService {
     }
 
     @Override
+    @Transactional
     public MusicSheetResDTO getMusicSheet(Long id) {
-        return MusicSheetResDTO.fromEntity(musicSheetRepository.findById(id)
+        return MusicSheetResDTO.from(musicSheetRepository.findById(id)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "MusicSheet", "Id", id)));
     }
 
     @Override
+    @Transactional
     public List<MusicSheetResDTO> searchMusicSheet(SearchMusicSheetReqDTO req) {
         return List.of();
     }
@@ -50,10 +52,11 @@ public class MusicSheetServiceImpl implements MusicSheetService {
 
         musicSheet.update(req);
 
-        return MusicSheetResDTO.fromEntity(musicSheetRepository.save(musicSheet));
+        return MusicSheetResDTO.from(musicSheetRepository.save(musicSheet));
     }
 
     @Override
+    @Transactional
     public void deleteMusicSheet(Long id) {
 
     }
