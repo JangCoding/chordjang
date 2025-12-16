@@ -18,13 +18,13 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public TokenResponseDTO login(LoginRequestDTO req){
-        User user = userRepository.findByUserId(req.getUserId())
+        User user = userRepository.findByLoginId(req.getUserId())
                 .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "Id", req.getUserId() ));
 
         if(!passwordEncoder.matches(req.getPassword(), user.getPassword()))
             throw new WrongPasswordException(ErrorCodeEnum.INVALID_PASSWORD);
 
-        String token = jwtTokenProvider.createToken(user.getUserId(), user.getRole());
+        String token = jwtTokenProvider.createToken(user.getLoginId(), user.getRole());
         return new TokenResponseDTO(token);
     }
 

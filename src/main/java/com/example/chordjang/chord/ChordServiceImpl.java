@@ -5,7 +5,6 @@ import com.example.chordjang.chord.DTO.CreateChordReqDTO;
 import com.example.chordjang.chord.DTO.SearchChordReqDTO;
 import com.example.chordjang.chord.DTO.UpdateChordReqDTO;
 import com.example.chordjang.exception.ErrorCodeEnum;
-import com.example.chordjang.exception.InvalidParameterException;
 import com.example.chordjang.exception.TargetAlreadyExistException;
 import com.example.chordjang.exception.TargetNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,22 +32,24 @@ public class ChordServiceImpl implements ChordService {
             frets = req.getFrets();
 
         if(chordRepository.getChordsByRootNoteAndQualityAndFrets(req.getRootNote(), req.getQuality(), frets).isEmpty()) {
-            return ChordResDTO.fromEntity( chordRepository.save(req.toEntity()) );
+            return ChordResDTO.from( chordRepository.save(req.toEntity()) );
         }
         else {
-            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_CHORD,
+            throw new TargetAlreadyExistException(ErrorCodeEnum.ALREADY_EXIST_TARGET, "코드",
                     "Chord", req.getType()+" "+req.getRootNote()+req.getType()+" "+req.getFrets());
         }
     }
 
     @Override
+    @Transactional
     public ChordResDTO getChord(Long id) {
         Chord chord = chordRepository.findById(id)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", id));
-        return ChordResDTO.fromEntity(chord);
+        return ChordResDTO.from(chord);
     }
 
     @Override
+    @Transactional
     public List<ChordResDTO> searchChord(SearchChordReqDTO req) {
 
         Specification<Chord> spec = Specification.unrestricted();
@@ -56,7 +57,7 @@ public class ChordServiceImpl implements ChordService {
         if (req.getId() != null) {
             Chord chord = chordRepository.findById(req.getId())
                     .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", req.getId()));
-            return List.of(ChordResDTO.fromEntity(chord));
+            return List.of(ChordResDTO.from(chord));
         }
 
         if (req.getRootNote() != null)
@@ -68,21 +69,22 @@ public class ChordServiceImpl implements ChordService {
         if(req.getType() != null)
             spec = spec.and(ChordSpecs.equalType(ChordHepler.convertType(req.getType())));
 
-        return chordRepository.findAll(spec).stream().map(ChordResDTO::fromEntity).toList();
+        return chordRepository.findAll(spec).stream().map(ChordResDTO::from).toList();
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public ChordResDTO updateChord(UpdateChordReqDTO req) {
         Chord chord = chordRepository.findById(req.getId())
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", req.getId()));
 
         chord.updateChord(req);
 
-        return ChordResDTO.fromEntity(chord);
+        return ChordResDTO.from(chord);
     }
 
     @Override
+    @Transactional
     public void deleteChord(Long id) {
         Chord chord = chordRepository.findById(id)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Chord", "Id", id));

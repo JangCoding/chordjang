@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Getter
 @Builder
 public class MusicSheetResDTO {
     Long id;
@@ -25,7 +24,7 @@ public class MusicSheetResDTO {
     String section; // Enum
     List<MeasureResDTO> measure; // 마디
 
-    public static MusicSheetResDTO fromEntity(MusicSheet musicSheet){
+    public static MusicSheetResDTO from(MusicSheet musicSheet){
 
         List<Measure> measures = musicSheet.getMeasures(); // 순서가 보장된 리스트
 
@@ -34,7 +33,7 @@ public class MusicSheetResDTO {
                 .mapToObj(i -> { // i는 0, 1, 2, ...
                     Measure measureObject = measures.get(i); // 'i' 번째 칸에 있는 Measure 객체 (번호 정보 없음)
                     int measureNumber = i + 1;               // 'i' 번째 칸이므로, 마디 번호는 i + 1
-                    return MeasureResDTO.fromEntity(measureObject, measureNumber);
+                    return MeasureResDTO.from(measureObject, measureNumber);
                 })
                 .collect(Collectors.toList());
 

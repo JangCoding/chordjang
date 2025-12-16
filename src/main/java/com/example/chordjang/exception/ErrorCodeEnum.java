@@ -24,9 +24,7 @@ public enum ErrorCodeEnum {
 
     // 409 CONFLICT
     CONFLICT(409, "CONFLICT", "데이터 충돌이 발생했습니다."),
-    ALREADY_EXIST_USER(409, "ALREADY_EXIST_USERID", "이미 등록된 유저 아이디 입니다."),
-    ALREADY_EXIST_EMAIL(409, "ALREADY_EXIST_EMAIL", "이미 등록된 이메일입니다."),
-    ALREADY_EXIST_CHORD(409, "ALREADY_EXIST_EMAIL", "이미 등록된 코드입니다."),
+    ALREADY_EXIST_TARGET(409, "ALREADY_EXIST_USERID", "이미 등록된 "),
 
     // 500 INTERNAL_SERVER_ERROR
     INTERNAL_SERVER_ERROR(500, "INTERNAL_SERVER_ERROR", "서버 내부 오류가 발생했습니다.");

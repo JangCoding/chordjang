@@ -18,7 +18,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         UserProfile userProfile = userProfileRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
-        return UserProfileResDTO.fromEntity(userProfile);
+        return UserProfileResDTO.from(userProfile);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         userProfileRepository.save(userProfile);  // cascade 설정해둬서 userProfile 도 함께 저장
 
-        return UserProfileResDTO.fromEntity(userProfile);
+        return UserProfileResDTO.from(userProfile);
 
     }
 }

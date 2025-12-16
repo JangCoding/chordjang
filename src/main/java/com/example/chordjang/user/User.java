@@ -1,8 +1,10 @@
 package com.example.chordjang.user;
 
+import com.example.chordjang.SheetPost.SheetPost;
+import com.example.chordjang.reply.Reply;
+import com.example.chordjang.user.DTO.UpdateUserReqDTO;
 import com.example.chordjang.userProfile.UserProfile;
 import com.example.chordjang.util.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,24 +27,27 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(nullable = false, unique = true)
-    String userId;
+    String loginId;
     @Column(nullable = false)
     String password;
     @Column(nullable = false, unique = true)
     String email;
+    @Column(nullable = false, unique = true)
+    String nickName;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     RoleEnum role;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_profile_id") // FK를 이 테이블에 둔다
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     UserProfile userProfile;
 
     @Builder
-    public User(String userId, String password, String email, RoleEnum role, UserProfile userProfile){
+    public User(String loginId, String password, String email, String nickName, RoleEnum role, UserProfile userProfile){
         // id 는 .save() 호출 시점에 자동 저장됨. build 시점까지는 null
-        this.userId = userId;
+        this.loginId = loginId;
         this.password = password;
         this.email = email;
+        this.nickName = nickName;
         this.role = role;
         this.userProfile = userProfile;
     }
@@ -51,12 +57,15 @@ public class User extends BaseEntity implements UserDetails {
         userProfile.setUser(this);
     }
 
-    public void updateUser(String newEmail){
-        if(newEmail != null)
-            this.email =  newEmail;
+    public void update(UpdateUserReqDTO req){
+        if(req.getEmail() != null)
+            this.email =  req.getEmail();
+        if(req.getNickName() != null)
+            this.nickName = req.getNickName();
     }
 
-    // UserDetails 를 상속받기 때문에 Override 필요
+
+    // UserDetails 를 상속받기 때문에 Override 필요 //
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(this.role.getKey()));
@@ -64,7 +73,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.userId; // Spring Security에서는 username을 userId로 사용
+        return this.loginId; // Spring Security에서는 username을 userId로 사용
     }
 
     @Override

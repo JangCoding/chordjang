@@ -3,13 +3,11 @@ package com.example.chordjang.chord.DTO;
 import com.example.chordjang.chord.Chord;
 import com.example.chordjang.chord.ChordHepler;
 import com.example.chordjang.chord.InstrumentType;
-import com.example.chordjang.chord.Quality;
 import com.example.chordjang.chord.RootNote;
 import lombok.Builder;
 import lombok.Getter;
 import java.util.Map;
 
-@Getter
 @Builder
 public class ChordResDTO {
     Long id;
@@ -18,8 +16,7 @@ public class ChordResDTO {
     String quality;
     Map<String,String> fretMap;
 
-    public static ChordResDTO fromEntity(Chord chord){
-
+    public static ChordResDTO from(Chord chord){
         return ChordResDTO.builder()
                 .id(chord.getId())
                 .type(chord.getType())
