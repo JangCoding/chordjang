@@ -1,8 +1,11 @@
 package com.example.chordjang.util;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
 @MappedSuperclass
 public abstract class BaseEntity {
 
