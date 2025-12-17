@@ -6,6 +6,7 @@ import com.example.chordjang.userProfile.DTO.UpdateUserProfileReqDTO;
 import com.example.chordjang.userProfile.DTO.UserProfileResDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,16 +15,18 @@ public class UserProfileServiceImpl implements UserProfileService {
     private final UserProfileRepository userProfileRepository;
 
     @Override
-    public UserProfileResDTO getUserProfile(String userId) {
-        UserProfile userProfile = userProfileRepository.findByUser_UserId(userId)
+    @Transactional
+    public UserProfileResDTO getUserProfile(Long userId) {
+        UserProfile userProfile = userProfileRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
         return UserProfileResDTO.from(userProfile);
     }
 
     @Override
-    public UserProfileResDTO updateUserProfile(String userId, UpdateUserProfileReqDTO req) {
-        UserProfile userProfile = userProfileRepository.findByUser_UserId(userId)
+    @Transactional
+    public UserProfileResDTO updateUserProfile(Long userId, UpdateUserProfileReqDTO req) {
+        UserProfile userProfile = userProfileRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "User", "UserId", userId));
 
         userProfile.updatePartial(req);

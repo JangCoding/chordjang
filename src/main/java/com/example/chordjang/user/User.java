@@ -27,7 +27,7 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(nullable = false, unique = true)
-    String loginId;
+    String loginId;         // userDetails.getUserName()
     @Column(nullable = false)
     String password;
     @Column(nullable = false, unique = true)

@@ -45,10 +45,10 @@ public class MusicSheetServiceImpl implements MusicSheetService {
 
     @Override
     @Transactional
-    public MusicSheetResDTO updateMusicSheet(Long id, MusicSheetReqDTO req) {
+    public MusicSheetResDTO updateMusicSheet(MusicSheetReqDTO req) {
 
-        MusicSheet musicSheet = musicSheetRepository.findById(id)
-                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "MusicSheet", "Id", id));
+        MusicSheet musicSheet = musicSheetRepository.findById(req.getId())
+                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "MusicSheet", "Id", req.getId()));
 
         musicSheet.update(req);
 

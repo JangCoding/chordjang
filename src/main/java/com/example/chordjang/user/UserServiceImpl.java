@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResDTO findUserBy(String loginId, String email) {
         if (loginId != null)
             return userRepository.findByLoginId(loginId)
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserResDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(UserResDTO::from)

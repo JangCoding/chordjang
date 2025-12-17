@@ -42,9 +42,9 @@ public class MusicSheetController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MusicSheetResDTO> updateMusicSheet(@PathVariable Long id, @RequestBody MusicSheetReqDTO req) {
-        MusicSheetResDTO res = musicSheetService.updateMusicSheet(id, req);
+    @PutMapping
+    public ResponseEntity<MusicSheetResDTO> updateMusicSheet(@RequestBody MusicSheetReqDTO req) {
+        MusicSheetResDTO res = musicSheetService.updateMusicSheet(req);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 

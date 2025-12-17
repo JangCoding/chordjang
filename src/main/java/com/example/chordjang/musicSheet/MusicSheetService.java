@@ -11,6 +11,6 @@ public interface MusicSheetService {
     MusicSheet createEntity(MusicSheetReqDTO req);
     public MusicSheetResDTO getMusicSheet(Long id);
     public List<MusicSheetResDTO> searchMusicSheet(SearchMusicSheetReqDTO req);
-    public MusicSheetResDTO updateMusicSheet(Long id, MusicSheetReqDTO req);
+    public MusicSheetResDTO updateMusicSheet(MusicSheetReqDTO req);
     public void deleteMusicSheet(Long id);
 }
