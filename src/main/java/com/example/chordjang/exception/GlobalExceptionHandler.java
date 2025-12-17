@@ -35,6 +35,12 @@ public class GlobalExceptionHandler {
         return createResponseEntity(ex.getErrorCode().getCode(), ex.getMessage(), HttpStatus.BAD_REQUEST, req);
     }
 
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex, HttpServletRequest req){
+        return createResponseEntity(ex.getErrorCode().getCode(), ex.getMessage(), HttpStatus.UNAUTHORIZED, req);
+    }
+
     // Runtime Exceptions
 
     @ExceptionHandler(IllegalArgumentException.class)
