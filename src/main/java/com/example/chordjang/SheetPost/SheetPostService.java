@@ -6,13 +6,13 @@ import com.example.chordjang.reply.ReplyResDTO;
 
 public interface SheetPostService {
     // SheetPost
-    public SheetPostResDTO createSheetPost(Long userId, SheetPostReqDTO req);
+    public SheetPostResDTO createSheetPost(String loginId, SheetPostReqDTO req);
     public SheetPostResDTO getSheetPost(Long id);
-    public SheetPostResDTO updateSheetPost(Long id, SheetPostReqDTO req);
+    public SheetPostResDTO updateSheetPost(SheetPostReqDTO req);
     public void deleteSheetPost(Long id);
     // Reply
-    public ReplyResDTO createReply(Long userId, Long sheetPostId, String comment);
-    public ReplyResDTO updateReply(Long replyId, String comment);
-    public ReplyResDTO getReply(Long replyId);
-    public ReplyResDTO deleteReply(Long replyId);
+    public ReplyResDTO createReply(String loginId, Long sheetPostId, String comment);
+    public ReplyResDTO updateReply(Long sheetPostId, Long replyId, String comment);
+    public ReplyResDTO getReply(Long sheetPostId,Long replyId);
+    public ReplyResDTO deleteReply(Long sheetPostId, Long replyId);
 }

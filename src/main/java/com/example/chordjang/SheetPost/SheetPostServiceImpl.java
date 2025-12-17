@@ -27,9 +27,9 @@ public class SheetPostServiceImpl implements SheetPostService{
 
     @Override
     @Transactional
-    public SheetPostResDTO createSheetPost(Long userId, SheetPostReqDTO req) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "유저", "UserId", userId));
+    public SheetPostResDTO createSheetPost(String loginId, SheetPostReqDTO req) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "유저", "loginId", loginId));
 
         SheetPost sheetPost = SheetPost.from(req);
 
@@ -53,9 +53,9 @@ public class SheetPostServiceImpl implements SheetPostService{
 
     @Override
     @Transactional
-    public SheetPostResDTO updateSheetPost(Long id, SheetPostReqDTO req) {
-        SheetPost sheetPost = sheetPostRepository.findById(id)
-                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "SheetPost", "Id", id));
+    public SheetPostResDTO updateSheetPost(SheetPostReqDTO req) {
+        SheetPost sheetPost = sheetPostRepository.findById(req.getId())
+                .orElseThrow(() -> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "SheetPost", "Id", req.getId()));
 
         sheetPost.update(req);
 
@@ -80,12 +80,12 @@ public class SheetPostServiceImpl implements SheetPostService{
     // Reply ----------------------------------------------------------------------------
     @Override
     @Transactional
-    public ReplyResDTO createReply(Long userId, Long sheetPostId, String comment){
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "유저", "userId", userId));
+    public ReplyResDTO createReply(String loginId, Long sheetPostId, String comment){
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(()-> new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "유저", "loginId", loginId));
 
         SheetPost sheetPost = sheetPostRepository.findById(sheetPostId)
-                .orElseThrow(()->new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "게시글", "SheetPostId", userId));
+                .orElseThrow(()->new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "게시글", "SheetPostId", sheetPostId));
 
         Reply reply = new Reply();
         reply.setComment(comment);
@@ -98,8 +98,8 @@ public class SheetPostServiceImpl implements SheetPostService{
 
     @Override
     @Transactional
-    public ReplyResDTO updateReply(Long replyId, String comment) {
-        Reply reply = replyRepository.findById(replyId)
+    public ReplyResDTO updateReply(Long sheetPostId, Long replyId, String comment) {
+        Reply reply = replyRepository.findBySheetPost_IdAndId(sheetPostId, replyId)
                 .orElseThrow(()->new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "댓글", "ReplyId", replyId));
 
         reply.update(comment);
@@ -109,16 +109,17 @@ public class SheetPostServiceImpl implements SheetPostService{
 
     @Override
     @Transactional
-    public ReplyResDTO getReply(Long replyId) {
-        Reply reply = replyRepository.findById(replyId)
-                .orElseThrow(()->new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "댓글", "ReplyId", replyId));
+    public ReplyResDTO getReply(Long sheetPostId, Long replyId) {
+        Reply reply = replyRepository.findBySheetPost_IdAndId(sheetPostId, replyId)
+            .orElseThrow(()->new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "댓글", "ReplyId", replyId));
 
         return ReplyResDTO.from(reply);
     }
 
     @Override
     @Transactional
-    public ReplyResDTO deleteReply(Long replyId) {
+    public ReplyResDTO deleteReply(Long sheetPostId, Long replyId) {
+
         return null;
     }
 }
