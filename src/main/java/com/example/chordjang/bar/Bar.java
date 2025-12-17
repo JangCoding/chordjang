@@ -1,7 +1,7 @@
-package com.example.chordjang.measure;
+package com.example.chordjang.bar;
 
-import com.example.chordjang.measure.DTO.MeasureReqDTO;
-import com.example.chordjang.musicSheet.MusicSheet;
+import com.example.chordjang.bar.DTO.BarReqDTO;
+import com.example.chordjang.sheet.Sheet;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name= "measures")
+@Table(name= "bars")
 @NoArgsConstructor
-public class Measure {
+public class Bar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -29,12 +29,12 @@ public class Measure {
     String info;    // Repeat Start, end, D.S, Coda ..
     String stroke;  // Enum?
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_sheet_id") // 테이블에 MusicSheet Id를 외래키(FK) 로 생성할 것. db의 필드 이름은 music_sheet_id
-    MusicSheet musicSheet;               // 외래키를 갖고 있는 '주인'( JPA적 관점 )
+    @JoinColumn(name = "sheet_id") // 테이블에 MusicSheet Id를 외래키(FK) 로 생성할 것. db의 필드 이름은 music_sheet_id
+    Sheet sheet;               // 외래키를 갖고 있는 '주인'( JPA적 관점 )
 
 
     @Builder
-    public Measure(Integer measureNo, String lyric, String chords, String timeSignature, String info, String stroke) {
+    public Bar(Integer measureNo, String lyric, String chords, String timeSignature, String info, String stroke) {
         this.lyric = lyric;
         this.chords = chords;
         this.timeSignature = TimeSignature.valueOf(timeSignature);
@@ -42,13 +42,13 @@ public class Measure {
         this.stroke = stroke;
     }
 
-    public static Measure from(MeasureReqDTO req) {
-        Measure measure = new Measure();
-        measure.update(req);
-        return measure;
+    public static Bar from(BarReqDTO req) {
+        Bar bar = new Bar();
+        bar.update(req);
+        return bar;
     }
 
-    public void update(MeasureReqDTO req){
+    public void update(BarReqDTO req){
         if(req.getLyric() != null)  this.lyric = req.getLyric();
         if(req.getChords() != null)  this.chords = req.getChords();
         if(req.getTimeSignature() != null)  this.timeSignature = TimeSignature.valueOf(req.getTimeSignature());
@@ -56,8 +56,8 @@ public class Measure {
         if(req.getStroke() != null) this.stroke = req.getStroke();
     }
 
-    public void setMusicSheet(MusicSheet musicSheet) {
-        if (musicSheet != null)
-            this.musicSheet = musicSheet;
+    public void setSheet(Sheet sheet) {
+        if (sheet != null)
+            this.sheet = sheet;
     }
 }

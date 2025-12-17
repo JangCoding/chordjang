@@ -1,9 +1,9 @@
-package com.example.chordjang.measure.DTO;
+package com.example.chordjang.bar.DTO;
 
 import lombok.Getter;
 
 @Getter
-public class MeasureReqDTO {
+public class BarReqDTO {
     Long id;
     String lyric;
     String chords;  // 사실상 List<Chord> "C/maj,C/maj,G/min,D/sus4"

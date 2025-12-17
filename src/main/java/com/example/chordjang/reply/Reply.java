@@ -1,6 +1,6 @@
 package com.example.chordjang.reply;
 
-import com.example.chordjang.SheetPost.SheetPost;
+import com.example.chordjang.post.Post;
 import com.example.chordjang.user.User;
 import com.example.chordjang.util.BaseEntity;
 import jakarta.persistence.Entity;
@@ -29,15 +29,15 @@ public class Reply extends BaseEntity {
     User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sheet_post_id")
-    SheetPost sheetPost;
+    @JoinColumn(name = "post_id")
+    Post post;
 
     public void setUser(User user){
         if(user != null) this.user = user;
     }
 
-    public void setSheetPost(SheetPost sheetPost){
-        if(sheetPost != null) this.sheetPost = sheetPost;
+    public void setPost(Post post){
+        if(post != null) this.post = post;
     }
 
     public void update(String newComment) {

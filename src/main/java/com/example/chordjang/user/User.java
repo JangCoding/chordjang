@@ -1,7 +1,5 @@
 package com.example.chordjang.user;
 
-import com.example.chordjang.SheetPost.SheetPost;
-import com.example.chordjang.reply.Reply;
 import com.example.chordjang.user.DTO.UpdateUserReqDTO;
 import com.example.chordjang.userProfile.UserProfile;
 import com.example.chordjang.util.BaseEntity;
@@ -13,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Getter

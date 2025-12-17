@@ -1,12 +1,12 @@
-package com.example.chordjang.musicSheet;
+package com.example.chordjang.sheet;
 
-import com.example.chordjang.measure.DTO.MeasureReqDTO;
-import com.example.chordjang.measure.Measure;
-import com.example.chordjang.SheetPost.SheetPost;
+import com.example.chordjang.bar.DTO.BarReqDTO;
+import com.example.chordjang.bar.Bar;
+import com.example.chordjang.post.Post;
 import com.example.chordjang.chord.RootNote;
 import com.example.chordjang.exception.ErrorCodeEnum;
 import com.example.chordjang.exception.TargetNotFoundException;
-import com.example.chordjang.musicSheet.DTO.MusicSheetReqDTO;
+import com.example.chordjang.sheet.DTO.SheetReqDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@Table(name = "music_sheets")
+@Table(name = "sheets")
 @NoArgsConstructor
-public class MusicSheet {
+public class Sheet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -41,31 +41,31 @@ public class MusicSheet {
     Integer bpm; // Beats Per Minute
     RootNote songKey;
     Integer capo;
-    @OneToMany(mappedBy = "musicSheet", cascade = CascadeType.ALL, orphanRemoval = true) // Cascade : 하위 항목들도 함께 저장
-    @OrderColumn(name = "measure_no") // @OneToMany 관계에서 리스트의 순서를 데이터베이스에 저장하고 관리하기 위한 기능
-    List<Measure> measures = new ArrayList<>(); // 마디
+    @OneToMany(mappedBy = "sheet", cascade = CascadeType.ALL, orphanRemoval = true) // Cascade : 하위 항목들도 함께 저장
+    @OrderColumn(name = "bar_no") // @OneToMany 관계에서 리스트의 순서를 데이터베이스에 저장하고 관리하기 위한 기능
+    List<Bar> bars = new ArrayList<>(); // 마디
     @OneToOne
-    @JoinColumn(name = "sheet_post_id")
-    SheetPost sheetPost;
+    @JoinColumn(name = "post_id")
+    Post post;
 
     @Builder
-    public MusicSheet(String title, String singer, String writer, Integer bpm, RootNote songKey, Integer capo, List<Measure> measureList) {
+    public Sheet(String title, String singer, String writer, Integer bpm, RootNote songKey, Integer capo, List<Bar> barList) {
         this.title = title;
         this.singer = singer;
         this.writer = writer;
         this.bpm = bpm;
         this.songKey = songKey;
         this.capo = capo;
-        this.measures = measureList;
+        this.bars = barList;
     }
 
-    public static MusicSheet from(MusicSheetReqDTO req) {
-        MusicSheet musicSheet = new MusicSheet();
-        musicSheet.update(req);
-        return musicSheet;
+    public static Sheet from(SheetReqDTO req) {
+        Sheet sheet = new Sheet();
+        sheet.update(req);
+        return sheet;
     }
 
-    public void update(MusicSheetReqDTO req) {
+    public void update(SheetReqDTO req) {
         if (req.getTitle() != null) this.title = req.getTitle();
         if (req.getSinger() != null) this.singer = req.getSinger();
         if (req.getWriter() != null) this.writer = req.getWriter();
@@ -73,37 +73,37 @@ public class MusicSheet {
         if (req.getSongKey() != null) this.songKey = req.getSongKey();
         if (req.getCapo() != null) this.capo = req.getCapo();
 
-        Map<Long, Measure> measureMap = this.getMeasures().stream()
-                .filter(measure -> measure.getId() != null)
+        Map<Long, Bar> measureMap = this.getBars().stream()
+                .filter(bar -> bar.getId() != null)
                 .collect(Collectors.toMap(
-                        Measure::getId,      // Key
+                        Bar::getId,      // Key
                         Function.identity() // Value 그대로 사용
                 ));
 
-        for(int i=0;i<req.getMeasureReqDTOList().size();i++) {
-            MeasureReqDTO measureReqDTO = req.getMeasureReqDTOList().get(i);
-            Long measureId = measureReqDTO.getId();
+        for(int i = 0; i<req.getBarReqDTOList().size(); i++) {
+            BarReqDTO barReqDTO = req.getBarReqDTOList().get(i);
+            Long measureId = barReqDTO.getId();
             if(measureId != null) {  // 기존 마디 업데이트
-                Measure measure = measureMap.get(measureId);
-                if(measure == null) {
+                Bar bar = measureMap.get(measureId);
+                if(bar == null) {
                     throw new TargetNotFoundException(ErrorCodeEnum.TARGET_NOT_FOUND, "Measure", "Id", measureId);
                 }
-                measure.update(measureReqDTO);
+                bar.update(barReqDTO);
                 measureMap.remove(measureId);   // 처리 후 Map 에서 지움
             } else {  // 새 마디 생성
-                Measure measure = Measure.from(measureReqDTO);
-                measure.setMusicSheet(this);
-                this.addMeasure(measure);
+                Bar bar = Bar.from(barReqDTO);
+                bar.setSheet(this);
+                this.addBar(bar);
             }
         }
-        this.getMeasures().removeAll(measureMap.values());
+        this.getBars().removeAll(measureMap.values());
     }
 
-    public void addMeasure(Measure measure) {
-        this.getMeasures().add(measure);
+    public void addBar(Bar bar) {
+        this.getBars().add(bar);
     }
 
-    public void setSheetPost(SheetPost sheetPost) {
-        if (sheetPost != null) this.sheetPost = sheetPost;
+    public void setPost(Post post) {
+        if (post != null) this.post = post;
     }
 }

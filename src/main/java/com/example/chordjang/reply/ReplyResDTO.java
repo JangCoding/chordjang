@@ -10,7 +10,7 @@ public class ReplyResDTO {
     String comment;
     Long userId;
     String nickName;
-    Long sheetPostId;
+    Long postId;
     LocalDateTime updateAt;
 
     public static ReplyResDTO from(Reply reply){
@@ -19,7 +19,7 @@ public class ReplyResDTO {
             .comment(reply.getComment())
             .userId(reply.getUser().getId())
             .nickName(reply.getUser().getNickName())
-            .sheetPostId(reply.getSheetPost().getId())
+            .postId(reply.getPost().getId())
             .updateAt(reply.getUpdatedAt())
             .build();
     }

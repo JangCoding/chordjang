@@ -1,8 +1,8 @@
-package com.example.chordjang.musicSheet.DTO;
+package com.example.chordjang.sheet.DTO;
 
 import com.example.chordjang.chord.RootNote;
 
-public class SearchMusicSheetReqDTO {
+public class SearchSheetReqDTO {
     Long id;
     String title;
     String singer;
