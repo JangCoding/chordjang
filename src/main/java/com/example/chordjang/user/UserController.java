@@ -2,6 +2,9 @@ package com.example.chordjang.user;
 
 import com.example.chordjang.user.DTO.UpdateUserReqDTO;
 import com.example.chordjang.user.DTO.UserResDTO;
+import com.example.chordjang.userProfile.DTO.UpdateUserProfileReqDTO;
+import com.example.chordjang.userProfile.DTO.UserProfileResDTO;
+import com.example.chordjang.userProfile.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +51,22 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id){
       userService.deleteUser(id);
         return ResponseEntity.noContent().build(); // 본문 없이 상태 코드와 헤더만 보낼 때
+    }
+
+    // UserProfile
+    private final UserProfileService userProfileService;
+
+    @GetMapping("/profile/")
+    public ResponseEntity<UserProfileResDTO> getUserProfile(
+            @AuthenticationPrincipal(expression = "username") Long userId) {
+        return ResponseEntity.ok().body(userProfileService.getUserProfile(userId));
+    }
+
+    @PutMapping("/profile/")
+    public ResponseEntity<UserProfileResDTO> updateUserProfile(
+            @AuthenticationPrincipal(expression = "username") Long userId,
+            @RequestBody UpdateUserProfileReqDTO req) {
+        return ResponseEntity.ok().body(userProfileService.updateUserProfile(userId, req));
     }
 
 }
